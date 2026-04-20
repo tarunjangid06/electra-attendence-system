@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Account — Nexa Kanakpura</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #1e3a5f; --primary-light: #2d5a8e;
+      --accent: #e8a020; --accent2: #f0c040;
+      --bg: #f4f6f9; --text: #1a2332;
+      --muted: #6b7a8d; --border: #e2e8f0;
+    }
+    body { font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--text); }
+
+    /* NAV */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 60px; height: 68px; background: var(--primary);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo { width: 38px; height: 38px; border-radius: 9px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; color: var(--primary); }
+    .nav-brand-text .t1 { font-size: 16px; font-weight: 800; color: white; letter-spacing: 3px; display: block; }
+    .nav-brand-text .t2 { font-size: 9px; font-weight: 600; color: var(--accent); letter-spacing: 4px; margin-top: 2px; display: block; }
+    .nav-back { display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); transition: all 0.2s; }
+    .nav-back:hover { background: rgba(255,255,255,0.1); color: white; }
+
+    /* MAIN */
+    main {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #0d1f35 0%, #1e3a5f 60%, #162d4a 100%);
+      position: relative; overflow: hidden;
+    }
+    main::before { content: ''; position: absolute; top: -200px; right: -200px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(232,160,32,0.07) 0%, transparent 70%); }
+    main::after { content: ''; position: absolute; bottom: -150px; left: -150px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(45,90,142,0.15) 0%, transparent 70%); }
+
+    .wrapper { display: flex; gap: 60px; align-items: center; max-width: 920px; width: 100%; position: relative; z-index: 1; }
+
+    /* LEFT */
+    .reg-info { flex: 1; color: white; }
+    .reg-info .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(232,160,32,0.12); border: 1px solid rgba(232,160,32,0.25); color: var(--accent2); padding: 7px 16px; border-radius: 30px; font-size: 12px; font-weight: 600; margin-bottom: 24px; }
+    .reg-info h1 { font-size: 38px; font-weight: 800; line-height: 1.15; margin-bottom: 16px; letter-spacing: -1px; }
+    .reg-info h1 span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .reg-info p { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 32px; }
+    .info-items { display: flex; flex-direction: column; gap: 14px; }
+    .info-item { display: flex; align-items: center; gap: 12px; }
+    .info-dot { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .info-item span { font-size: 14px; color: rgba(255,255,255,0.65); }
+
+    /* REGISTER CARD */
+    .reg-card { width: 420px; flex-shrink: 0; background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .card-top { background: linear-gradient(135deg, var(--primary), var(--primary-light)); padding: 28px 32px; text-align: center; }
+    .card-top-icon { font-size: 38px; margin-bottom: 10px; }
+    .card-top h2 { font-size: 21px; font-weight: 700; color: white; margin-bottom: 4px; }
+    .card-top p { font-size: 13px; color: rgba(255,255,255,0.6); }
+
+    .card-body { padding: 28px 32px; }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .input-group { margin-bottom: 16px; }
+    .input-group label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 7px; }
+    .input-wrap { position: relative; }
+    .input-wrap .icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 15px; pointer-events: none; }
+    .input-group input,
+    .input-group select {
+      width: 100%; padding: 12px 12px 12px 40px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 14px; font-family: inherit; color: var(--text);
+      outline: none; transition: all 0.2s; background: #fafbfc;
+      appearance: none;
+    }
+    .input-group input:focus,
+    .input-group select:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(45,90,142,0.1); background: white; }
+
+    .reg-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: var(--primary); border: none; border-radius: 10px; font-size: 15px; font-weight: 800; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; margin-top: 4px; }
+    .reg-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,160,32,0.4); }
+
+    .error-msg { display: none; align-items: center; gap: 8px; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; margin-top: 12px; }
+    .error-msg.show { display: flex; }
+    .success-msg { display: none; align-items: center; gap: 8px; background: #f0fdf4; border: 1px solid #86efac; color: #15803d; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; margin-top: 12px; }
+    .success-msg.show { display: flex; }
+
+    .card-footer { padding: 14px 32px; background: #f8fafc; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--muted); }
+    .card-footer a { color: var(--primary-light); font-weight: 700; text-decoration: none; }
+    .card-footer a:hover { text-decoration: underline; }
+
+    /* FOOTER */
+    footer { background: #0d1f35; padding: 18px 60px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .footer-brand { display: flex; align-items: center; gap: 8px; }
+    .footer-logo { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: var(--primary); }
+    .footer-name { font-size: 13px; font-weight: 700; color: white; letter-spacing: 2px; }
+    .footer-right { font-size: 12px; color: rgba(255,255,255,0.35); }
+
+    @media (max-width: 800px) {
+      nav { padding: 0 20px; }
+      .wrapper { flex-direction: column; gap: 32px; }
+      .reg-info { text-align: center; }
+      .reg-info h1 { font-size: 28px; }
+      .info-items { align-items: center; }
+      .reg-card { width: 100%; max-width: 440px; }
+      .row-2 { grid-template-columns: 1fr; }
+      footer { padding: 16px 20px; flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="nav-logo">N</div>
+    <div class="nav-brand-text">
+      <span class="t1">NEXA</span>
+      <span class="t2">KANAKPURA</span>
+    </div>
+  </a>
+  <a href="login.html" class="nav-back">← Back to Sign In</a>
+</nav>
+
+<main>
+  <div class="wrapper">
+
+    <div class="reg-info">
+      <div class="badge">🏭 New Worker Registration</div>
+      <h1>Join<br/><span>Nexa Kanakpura</span></h1>
+      <p>Create your account to start marking attendance at the workshop with GPS verification.</p>
+      <div class="info-items">
+        <div class="info-item"><div class="info-dot">👤</div><span>Create your personal worker account</span></div>
+        <div class="info-item"><div class="info-dot">📍</div><span>GPS check-in within 100m of workshop</span></div>
+        <div class="info-item"><div class="info-dot">📊</div><span>Access your personal attendance dashboard</span></div>
+        <div class="info-item"><div class="info-dot">🔒</div><span>Your data is private and secure</span></div>
+      </div>
+    </div>
+
+    <div class="reg-card">
+      <div class="card-top">
+        <div class="card-top-icon">📝</div>
+        <h2>Create Account</h2>
+        <p>Fill in your details to register</p>
+      </div>
+      <div class="card-body">
+
+        <div class="row-2">
+          <div class="input-group">
+            <label>First Name</label>
+            <div class="input-wrap">
+              <span class="icon">👤</span>
+              <input type="text" id="firstName" placeholder="First name"/>
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Last Name</label>
+            <div class="input-wrap">
+              <span class="icon">👤</span>
+              <input type="text" id="lastName" placeholder="Last name"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Role / Job</label>
+          <div class="input-wrap">
+            <span class="icon">🔧</span>
+            <select id="role">
+              <option value="">Select your role</option>
+              <option>Supervisor</option>
+              <option>Worker</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Phone Number</label>
+          <div class="input-wrap">
+            <span class="icon">📱</span>
+            <input type="tel" id="phone" placeholder="Enter phone number"/>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Username</label>
+          <div class="input-wrap">
+            <span class="icon">🪪</span>
+            <input type="text" id="username" placeholder="Choose a username"/>
+          </div>
+        </div>
+
+        <div class="row-2">
+          <div class="input-group">
+            <label>Password</label>
+            <div class="input-wrap">
+              <span class="icon">🔑</span>
+              <input type="password" id="password" placeholder="Password"/>
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Confirm</label>
+            <div class="input-wrap">
+              <span class="icon">🔑</span>
+              <input type="password" id="confirmPass" placeholder="Confirm"/>
+            </div>
+          </div>
+        </div>
+
+        <button class="reg-btn" onclick="doRegister()">
+          Create Account
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+
+        <div class="error-msg" id="errMsg">⚠️ <span id="errText"></span></div>
+        <div class="success-msg" id="successMsg">✅ <span id="successText"></span></div>
+
+      </div>
+      <div class="card-footer">
+        Already have an account? <a href="login.html">Sign In →</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-brand">
+    <div class="footer-logo">N</div>
+    <span class="footer-name">NEXA KANAKPURA</span>
+  </div>
+  <div class="footer-right">© 2025 Nexa Kanakpura · All rights reserved</div>
+</footer>
+
+<script>
+  function getUsers() { return JSON.parse(localStorage.getItem('nexa_users') || '[]'); }
+  function saveUsers(u) { localStorage.setItem('nexa_users', JSON.stringify(u)); }
+
+  // Debug: show current registered users count
+  console.log('Currently registered users:', getUsers().length, getUsers().map(u => u.id));
+
+  function showError(msg) {
+    const e = document.getElementById('errMsg');
+    document.getElementById('errText').textContent = msg;
+    e.classList.add('show');
+    document.getElementById('successMsg').classList.remove('show');
+  }
+
+  function showSuccess(msg) {
+    const s = document.getElementById('successMsg');
+    document.getElementById('successText').textContent = msg;
+    s.classList.add('show');
+    document.getElementById('errMsg').classList.remove('show');
+  }
+
+  function doRegister() {
+    const firstName   = document.getElementById('firstName').value.trim();
+    const lastName    = document.getElementById('lastName').value.trim();
+    const role        = document.getElementById('role').value;
+    const phone       = document.getElementById('phone').value.trim();
+    const username    = document.getElementById('username').value.trim();
+    const password    = document.getElementById('password').value;
+    const confirmPass = document.getElementById('confirmPass').value;
+
+    // Validation
+    if (!firstName || !lastName)       return showError('Please enter your first and last name.');
+    if (!role)                          return showError('Please select your role.');
+    if (!phone)                         return showError('Please enter your phone number.');
+    if (!username)                      return showError('Please choose a username.');
+    if (username.length < 3)            return showError('Username must be at least 3 characters.');
+    if (!password)                      return showError('Please enter a password.');
+    if (password.length < 4)            return showError('Password must be at least 4 characters.');
+    if (password !== confirmPass)       return showError('Passwords do not match.');
+    if (username === 'admin')           return showError('This username is not allowed.');
+
+    const users = getUsers();
+    if (users.find(u => u.id === username)) return showError('Username already taken. Please choose another.');
+
+    const newUser = {
+      id: username,
+      pass: password,
+      name: firstName + ' ' + lastName,
+      role: role,
+      phone: phone,
+      isAdmin: false,
+      joinedAt: new Date().toISOString()
+    };
+
+    users.push(newUser);
+    saveUsers(users);
+    // Also save session so user is logged in immediately after register
+    localStorage.setItem('nexaUser', JSON.stringify(newUser));
+    showSuccess('Account created! Redirecting to your dashboard...');
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1800);
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
+</script>
+</body>
+</html>

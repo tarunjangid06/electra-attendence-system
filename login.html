@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In — Nexa Kanakpura</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #1e3a5f;
+      --primary-light: #2d5a8e;
+      --accent: #e8a020;
+      --accent2: #f0c040;
+      --bg: #f4f6f9;
+      --text: #1a2332;
+      --muted: #6b7a8d;
+      --border: #e2e8f0;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* NAV */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 60px; height: 68px;
+      background: var(--primary);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo {
+      width: 38px; height: 38px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900; color: var(--primary);
+    }
+    .nav-brand-text { display: flex; flex-direction: column; line-height: 1; }
+    .nav-brand-text .t1 { font-size: 16px; font-weight: 800; color: white; letter-spacing: 3px; }
+    .nav-brand-text .t2 { font-size: 9px; font-weight: 600; color: var(--accent); letter-spacing: 4px; margin-top: 2px; }
+    .nav-back {
+      display: flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; font-weight: 500;
+      padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);
+      transition: all 0.2s;
+    }
+    .nav-back:hover { background: rgba(255,255,255,0.1); color: white; }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #0d1f35 0%, #1e3a5f 60%, #162d4a 100%);
+      position: relative; overflow: hidden;
+    }
+    main::before {
+      content: '';
+      position: absolute; top: -200px; right: -200px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,160,32,0.07) 0%, transparent 70%);
+    }
+    main::after {
+      content: '';
+      position: absolute; bottom: -150px; left: -150px;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(45,90,142,0.15) 0%, transparent 70%);
+    }
+
+    .login-wrapper {
+      display: flex;
+      gap: 60px;
+      align-items: center;
+      max-width: 900px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* LEFT SIDE */
+    .login-info { flex: 1; color: white; }
+    .login-info .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(232,160,32,0.12); border: 1px solid rgba(232,160,32,0.25);
+      color: var(--accent2); padding: 7px 16px; border-radius: 30px;
+      font-size: 12px; font-weight: 600; margin-bottom: 24px;
+    }
+    .login-info h1 { font-size: 40px; font-weight: 800; line-height: 1.15; margin-bottom: 16px; letter-spacing: -1px; }
+    .login-info h1 span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .login-info p { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 32px; }
+    .info-items { display: flex; flex-direction: column; gap: 14px; }
+    .info-item { display: flex; align-items: center; gap: 12px; }
+    .info-dot { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .info-item span { font-size: 14px; color: rgba(255,255,255,0.65); font-weight: 400; }
+
+    /* LOGIN CARD */
+    .login-card {
+      width: 400px;
+      flex-shrink: 0;
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .card-top {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      padding: 32px;
+      text-align: center;
+    }
+    .card-top-icon { font-size: 40px; margin-bottom: 12px; }
+    .card-top h2 { font-size: 22px; font-weight: 700; color: white; margin-bottom: 4px; }
+    .card-top p { font-size: 13px; color: rgba(255,255,255,0.6); }
+
+    .card-body { padding: 32px; }
+
+    .input-group { margin-bottom: 20px; }
+    .input-group label {
+      display: block; font-size: 11px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;
+    }
+    .input-wrap { position: relative; }
+    .input-wrap .icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      font-size: 16px; pointer-events: none;
+    }
+    .input-group input {
+      width: 100%; padding: 13px 14px 13px 42px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 14px; font-family: inherit; color: var(--text);
+      outline: none; transition: all 0.2s; background: #fafbfc;
+    }
+    .input-group input:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(45,90,142,0.1);
+      background: white;
+    }
+
+    .login-btn {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white; border: none; border-radius: 10px;
+      font-size: 15px; font-weight: 700; font-family: inherit;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all 0.2s; margin-top: 4px;
+    }
+    .login-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(30,58,95,0.3); }
+    .login-btn:active { transform: translateY(0); }
+
+    .error-msg {
+      display: none; align-items: center; gap: 8px;
+      background: #fef2f2; border: 1px solid #fecaca;
+      color: #dc2626; padding: 10px 14px; border-radius: 8px;
+      font-size: 13px; font-weight: 500; margin-top: 14px;
+    }
+    .error-msg.show { display: flex; }
+
+    .card-footer {
+      padding: 16px 32px;
+      background: #f8fafc; border-top: 1px solid var(--border);
+      text-align: center; font-size: 12px; color: var(--muted);
+    }
+
+    /* FOOTER */
+    footer {
+      background: #0d1f35; padding: 18px 60px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 8px; }
+    .footer-logo { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: var(--primary); }
+    .footer-name { font-size: 13px; font-weight: 700; color: white; letter-spacing: 2px; }
+    .footer-right { font-size: 12px; color: rgba(255,255,255,0.35); }
+
+    @media (max-width: 800px) {
+      nav { padding: 0 20px; }
+      .login-wrapper { flex-direction: column; gap: 32px; }
+      .login-info { text-align: center; }
+      .login-info h1 { font-size: 28px; }
+      .info-items { align-items: center; }
+      .login-card { width: 100%; max-width: 420px; }
+      footer { padding: 16px 20px; flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="nav-logo">N</div>
+    <div class="nav-brand-text">
+      <span class="t1">NEXA</span>
+      <span class="t2">KANAKPURA</span>
+    </div>
+  </a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<main>
+  <div class="login-wrapper">
+
+    <div class="login-info">
+      <div class="badge">🏭 Attendance Portal</div>
+      <h1>Welcome to<br/><span>Nexa Kanakpura</span></h1>
+      <p>Sign in to access your personal attendance dashboard with GPS-verified check-ins and complete history.</p>
+      <div class="info-items">
+        <div class="info-item"><div class="info-dot">📍</div><span>GPS verified check-in within 100m of workshop</span></div>
+        <div class="info-item"><div class="info-dot">📊</div><span>Personal dashboard with full attendance history</span></div>
+        <div class="info-item"><div class="info-dot">🔒</div><span>Secure private account for every worker</span></div>
+        <div class="info-item"><div class="info-dot">🛡️</div><span>Admin panel for complete team overview</span></div>
+      </div>
+    </div>
+
+    <div class="login-card">
+      <div class="card-top">
+        <div class="card-top-icon">🔐</div>
+        <h2>Sign In</h2>
+        <p>Enter your credentials to continue</p>
+      </div>
+      <div class="card-body">
+        <div class="input-group">
+          <label>Username</label>
+          <div class="input-wrap">
+            <span class="icon">👤</span>
+            <input type="text" id="loginUser" placeholder="Enter your username"/>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <div class="input-wrap">
+            <span class="icon">🔑</span>
+            <input type="password" id="loginPass" placeholder="Enter your password"/>
+          </div>
+        </div>
+        <button class="login-btn" onclick="doLogin()">
+          Sign In
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <div class="error-msg" id="errMsg">⚠️ <span id="errText">Invalid username or password.</span></div>
+        <div style="text-align:center;margin-top:18px;padding-top:18px;border-top:1px solid #e2e8f0;">
+          <span style="font-size:13px;color:#6b7a8d;">Don't have an account?</span>
+          <a href="register.html" style="font-size:13px;font-weight:700;color:#2d5a8e;text-decoration:none;margin-left:6px;">Create Account →</a>
+        </div>
+      </div>
+      <div class="card-footer">🏭 Nexa Kanakpura · Secure Attendance Portal</div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-brand">
+    <div class="footer-logo">N</div>
+    <span class="footer-name">NEXA KANAKPURA</span>
+  </div>
+  <div class="footer-right">© 2025 Nexa Kanakpura · All rights reserved</div>
+</footer>
+
+<script>
+  const ADMIN = { id: 'admin', pass: 'admin123', name: 'Admin', role: 'Administrator', isAdmin: true };
+
+  function doLogin() {
+    const uid = document.getElementById('loginUser').value.trim();
+    const pwd = document.getElementById('loginPass').value.trim();
+    const err = document.getElementById('errMsg');
+
+    if (!uid || !pwd) {
+      document.getElementById('errText').textContent = 'Please enter username and password.';
+      err.classList.add('show'); return;
+    }
+
+    // Admin check
+    if (uid === ADMIN.id && pwd === ADMIN.pass) {
+      err.classList.remove('show');
+      localStorage.setItem('nexaUser', JSON.stringify(ADMIN));
+      window.location.href = 'admin.html'; return;
+    }
+
+    // Registered workers check
+    const users = JSON.parse(localStorage.getItem('nexa_users') || '[]');
+    const user = users.find(u => u.id === uid && u.pass === pwd);
+
+    if (!user) {
+      document.getElementById('errText').textContent = 'Account not found. Please register first or check your credentials.';
+      err.classList.add('show'); return;
+    }
+
+    err.classList.remove('show');
+    localStorage.setItem('nexaUser', JSON.stringify(user));
+    window.location.href = 'dashboard.html';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>

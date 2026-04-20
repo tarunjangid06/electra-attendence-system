@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Dashboard — Nexa Kanakpura</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #1e3a5f; --primary-light: #2d5a8e;
+      --accent: #e8a020; --accent2: #f0c040;
+      --bg: #f4f6f9; --white: #fff;
+      --text: #1a2332; --muted: #6b7a8d; --border: #e2e8f0;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* NAVBAR */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 40px; height: 68px; background: var(--primary);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo { width: 38px; height: 38px; border-radius: 9px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 900; color: var(--primary); }
+    .nav-brand-text .t1 { font-size: 15px; font-weight: 800; color: white; letter-spacing: 3px; display: block; }
+    .nav-brand-text .t2 { font-size: 8px; font-weight: 600; color: var(--accent); letter-spacing: 4px; display: block; margin-top: 1px; }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-user-pill { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); padding: 7px 14px; border-radius: 30px; }
+    .nav-user-pill .avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: var(--primary); }
+    .nav-user-pill span { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 500; }
+    .btn-logout { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; font-weight: 500; transition: all 0.2s; text-decoration: none; }
+    .btn-logout:hover { background: rgba(220,38,38,0.2); border-color: rgba(220,38,38,0.4); color: #fca5a5; }
+
+    /* CONTAINER */
+    .container { max-width: 1000px; margin: 32px auto; padding: 0 20px; display: flex; flex-direction: column; gap: 24px; }
+
+    /* WELCOME BANNER */
+    .welcome-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: 20px; padding: 32px 36px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+      box-shadow: 0 4px 24px rgba(30,58,95,0.2);
+    }
+    .wb-left { display: flex; align-items: center; gap: 20px; }
+    .wb-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; color: var(--primary); box-shadow: 0 4px 16px rgba(0,0,0,0.2); flex-shrink: 0; }
+    .wb-info h2 { font-size: 22px; font-weight: 800; color: white; margin-bottom: 4px; }
+    .wb-role { display: inline-block; background: rgba(232,160,32,0.2); border: 1px solid rgba(232,160,32,0.3); color: var(--accent2); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+    .wb-date { font-size: 13px; color: rgba(255,255,255,0.55); }
+    .wb-right { text-align: right; }
+    .wb-status { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+    .wb-status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 30px; font-size: 14px; font-weight: 700; }
+    .wb-status-badge.in { background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.3); color: #4ade80; }
+    .wb-status-badge.out { background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.3); color: #fbbf24; }
+    .wb-status-badge.none { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.5); }
+
+    /* STAT CARDS */
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .stat-card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 16px rgba(30,58,95,0.07); border: 1px solid rgba(226,232,240,0.6); display: flex; align-items: center; gap: 16px; }
+    .sc-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .sc-icon.blue { background: #dbeafe; }
+    .sc-icon.green { background: #dcfce7; }
+    .sc-icon.yellow { background: #fef3c7; }
+    .sc-num { font-size: 30px; font-weight: 800; line-height: 1; color: var(--text); }
+    .sc-lbl { font-size: 12px; color: var(--muted); font-weight: 500; margin-top: 4px; }
+
+    /* CHECK IN CARD */
+    .checkin-card { background: white; border-radius: 20px; padding: 36px; box-shadow: 0 2px 16px rgba(30,58,95,0.07); border: 1px solid rgba(226,232,240,0.6); text-align: center; }
+    .checkin-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .checkin-card p { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+    .loc-info { display: inline-flex; align-items: center; gap: 6px; background: #f0f9ff; border: 1px solid #bae6fd; color: #0369a1; padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 500; margin-bottom: 24px; min-height: 36px; }
+    .check-btn { padding: 16px 48px; border: none; border-radius: 50px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.25s; display: inline-flex; align-items: center; gap: 10px; }
+    .check-btn.checkin { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; box-shadow: 0 6px 20px rgba(22,163,74,0.3); }
+    .check-btn.checkin:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(22,163,74,0.4); }
+    .check-btn.checkout { background: linear-gradient(135deg, #d97706, #f59e0b); color: white; box-shadow: 0 6px 20px rgba(217,119,6,0.3); }
+    .check-btn.checkout:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(217,119,6,0.4); }
+    .check-btn.done { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
+    .check-result { margin-top: 16px; font-size: 14px; color: var(--muted); min-height: 20px; }
+
+    /* TABLE CARD */
+    .table-card { background: white; border-radius: 20px; padding: 28px; box-shadow: 0 2px 16px rgba(30,58,95,0.07); border: 1px solid rgba(226,232,240,0.6); }
+    .table-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .table-card-header h3 { font-size: 16px; font-weight: 700; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    thead tr { background: #f8fafc; }
+    th { padding: 11px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; border-bottom: 2px solid var(--border); white-space: nowrap; }
+    td { padding: 13px 16px; border-bottom: 1px solid #f1f5f9; }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #f8fafc; }
+    .badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+    .badge.present { background: #dcfce7; color: #15803d; }
+    .badge.partial { background: #fef3c7; color: #b45309; }
+    .badge.absent  { background: #fee2e2; color: #b91c1c; }
+    .empty-row td { text-align: center; color: var(--muted); padding: 32px; font-size: 14px; }
+
+    @media (max-width: 700px) {
+      nav { padding: 0 16px; }
+      .container { padding: 0 12px; margin: 20px auto; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .welcome-banner { padding: 24px 20px; }
+      .wb-avatar { width: 56px; height: 56px; font-size: 22px; }
+      .wb-info h2 { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="nav-logo">N</div>
+    <div class="nav-brand-text">
+      <span class="t1">NEXA</span>
+      <span class="t2">KANAKPURA</span>
+    </div>
+  </a>
+  <div class="nav-right">
+    <div class="nav-user-pill">
+      <div class="avatar" id="navAvatar">?</div>
+      <span id="navName">Worker</span>
+    </div>
+    <a href="login.html" class="btn-logout" onclick="logout()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+      Logout
+    </a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- WELCOME BANNER -->
+  <div class="welcome-banner">
+    <div class="wb-left">
+      <div class="wb-avatar" id="wbAvatar">?</div>
+      <div class="wb-info">
+        <h2 id="wbName">Loading...</h2>
+        <div class="wb-role" id="wbRole">—</div>
+        <div class="wb-date" id="wbDate">—</div>
+      </div>
+    </div>
+    <div class="wb-right">
+      <div class="wb-status">Today's Status</div>
+      <div class="wb-status-badge none" id="wbStatusBadge">— Not Checked In</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="sc-icon blue">📅</div>
+      <div><div class="sc-num" id="statTotal">0</div><div class="sc-lbl">Total Days Present</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-icon green">📆</div>
+      <div><div class="sc-num" id="statMonth">0</div><div class="sc-lbl">This Month</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-icon yellow">⏱️</div>
+      <div><div class="sc-num" id="statStreak">0</div><div class="sc-lbl">Day Streak</div></div>
+    </div>
+  </div>
+
+  <!-- CHECK IN CARD -->
+  <div class="checkin-card">
+    <h3>Mark Your Attendance</h3>
+    <p>You must be within 100 meters of Nexa Kanakpura workshop to check in.</p>
+    <div class="loc-info" id="locInfo">📡 Location will be verified on check-in</div>
+    <br/>
+    <button class="check-btn checkin" id="checkBtn" onclick="handleCheck()">📍 Check In</button>
+    <div class="check-result" id="checkResult"></div>
+  </div>
+
+  <!-- HISTORY TABLE -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h3>📋 Attendance History</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>#</th><th>Date</th><th>Day</th><th>Check In</th><th>Check Out</th><th>Status</th></tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const WORKSHOP = { lat: 26.92870363803506, lng: 75.70057698074936, radius: 100 };
+
+  const user = JSON.parse(localStorage.getItem('nexaUser') || 'null');
+  if (!user || user.isAdmin) window.location.href = 'login.html';
+
+  function today() { return new Date().toISOString().split('T')[0]; }
+  function nowTime() { return new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }); }
+  function fmtDate(d) { return new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }); }
+  function fmtDay(d) { return new Date(d).toLocaleDateString('en-IN', { weekday: 'long' }); }
+  function getRecords() { return JSON.parse(localStorage.getItem('att_' + user.id) || '[]'); }
+  function saveRecords(r) { localStorage.setItem('att_' + user.id, JSON.stringify(r)); }
+  function logout() { localStorage.removeItem('nexaUser'); window.location.href = 'login.html'; }
+
+  function haversine(lat1, lng1, lat2, lng2) {
+    const R = 6371000, dLat = (lat2-lat1)*Math.PI/180, dLng = (lng2-lng1)*Math.PI/180;
+    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+  function calcStreak() {
+    const records = getRecords().filter(r => r.checkIn).map(r => r.date).sort((a,b) => b.localeCompare(a));
+    if (!records.length) return 0;
+    let streak = 0, d = new Date();
+    for (let i = 0; i < 365; i++) {
+      const ds = d.toISOString().split('T')[0];
+      if (records.includes(ds)) { streak++; d.setDate(d.getDate()-1); }
+      else if (i === 0) { d.setDate(d.getDate()-1); }
+      else break;
+    }
+    return streak;
+  }
+
+  function render() {
+    const records = getRecords();
+    const todayRec = records.find(r => r.date === today());
+    const thisMonth = new Date().toISOString().slice(0,7);
+
+    // Nav & banner
+    document.getElementById('navAvatar').textContent = user.name.charAt(0);
+    document.getElementById('navName').textContent = user.name;
+    document.getElementById('wbAvatar').textContent = user.name.charAt(0);
+    document.getElementById('wbName').textContent = user.name;
+    document.getElementById('wbRole').textContent = user.role;
+    document.getElementById('wbDate').textContent = new Date().toLocaleDateString('en-IN', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
+
+    // Status badge
+    const badge = document.getElementById('wbStatusBadge');
+    if (todayRec?.checkOut) {
+      badge.className = 'wb-status-badge in'; badge.textContent = '✅ Completed';
+    } else if (todayRec?.checkIn) {
+      badge.className = 'wb-status-badge out'; badge.textContent = '🟡 Checked In';
+    } else {
+      badge.className = 'wb-status-badge none'; badge.textContent = '— Not Checked In';
+    }
+
+    // Stats
+    document.getElementById('statTotal').textContent = records.filter(r => r.checkIn).length;
+    document.getElementById('statMonth').textContent = records.filter(r => r.date.startsWith(thisMonth) && r.checkIn).length;
+    document.getElementById('statStreak').textContent = calcStreak();
+
+    // Check button
+    const btn = document.getElementById('checkBtn');
+    if (todayRec?.checkOut) {
+      btn.className = 'check-btn done'; btn.textContent = '✅ Attendance Complete for Today';
+    } else if (todayRec?.checkIn) {
+      btn.className = 'check-btn checkout'; btn.innerHTML = '🚪 Check Out';
+    } else {
+      btn.className = 'check-btn checkin'; btn.innerHTML = '📍 Check In';
+    }
+
+    // History table
+    const sorted = [...records].sort((a,b) => b.date.localeCompare(a.date));
+    const tbody = document.getElementById('historyBody');
+    if (!sorted.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="6">📭 No attendance records yet. Check in to get started!</td></tr>';
+      return;
+    }
+    tbody.innerHTML = sorted.map((r, i) => {
+      const status = r.checkOut ? 'present' : r.checkIn ? 'partial' : 'absent';
+      const label  = r.checkOut ? 'Complete' : r.checkIn ? 'Checked In' : 'Absent';
+      return `<tr>
+        <td style="color:var(--muted);font-size:12px">${i+1}</td>
+        <td><strong>${fmtDate(r.date)}</strong></td>
+        <td style="color:var(--muted)">${fmtDay(r.date)}</td>
+        <td>${r.checkIn || '—'}</td>
+        <td>${r.checkOut || '—'}</td>
+        <td><span class="badge ${status}">${label}</span></td>
+      </tr>`;
+    }).join('');
+  }
+
+  function handleCheck() {
+    const btn = document.getElementById('checkBtn');
+    const records = getRecords();
+    const todayRec = records.find(r => r.date === today());
+    if (todayRec?.checkOut) return;
+
+    document.getElementById('locInfo').textContent = '📡 Getting your location...';
+    document.getElementById('checkResult').textContent = '';
+
+    if (!navigator.geolocation) {
+      document.getElementById('locInfo').textContent = '❌ Geolocation not supported.';
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(pos => {
+      const dist = Math.round(haversine(pos.coords.latitude, pos.coords.longitude, WORKSHOP.lat, WORKSHOP.lng));
+      document.getElementById('locInfo').textContent = `📍 You are ${dist}m from workshop`;
+
+      if (dist > WORKSHOP.radius) {
+        document.getElementById('checkResult').textContent = `❌ Too far! You are ${dist}m away. Must be within ${WORKSHOP.radius}m.`;
+        return;
+      }
+
+      if (!todayRec) {
+        records.push({ date: today(), checkIn: nowTime(), checkOut: null });
+        document.getElementById('checkResult').textContent = `✅ Checked in successfully at ${nowTime()}`;
+      } else {
+        todayRec.checkOut = nowTime();
+        document.getElementById('checkResult').textContent = `✅ Checked out successfully at ${nowTime()}`;
+      }
+      saveRecords(records);
+      render();
+    }, err => {
+      const msgs = { 1: 'Location permission denied. Please allow location access.', 2: 'Location unavailable.', 3: 'Request timed out.' };
+      document.getElementById('locInfo').textContent = '❌ ' + (msgs[err.code] || 'Location error.');
+    }, { enableHighAccuracy: true, timeout: 10000 });
+  }
+
+  render();
+</script>
+</body>
+</html>

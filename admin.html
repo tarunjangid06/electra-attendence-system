@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel — Nexa Kanakpura</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #1e3a5f; --primary-light: #2d5a8e;
+      --accent: #e8a020; --accent2: #f0c040;
+      --bg: #f4f6f9; --white: #fff;
+      --text: #1a2332; --muted: #6b7a8d; --border: #e2e8f0;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 0 40px; height: 68px; background: var(--primary); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.2); }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo { width: 38px; height: 38px; border-radius: 9px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 900; color: var(--primary); }
+    .nav-brand-text .t1 { font-size: 15px; font-weight: 800; color: white; letter-spacing: 3px; display: block; }
+    .nav-brand-text .t2 { font-size: 8px; font-weight: 600; color: var(--accent); letter-spacing: 4px; display: block; margin-top: 1px; }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-badge { background: rgba(232,160,32,0.15); border: 1px solid rgba(232,160,32,0.3); color: var(--accent2); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .btn-logout { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; font-weight: 500; transition: all 0.2s; text-decoration: none; }
+    .btn-logout:hover { background: rgba(220,38,38,0.2); border-color: rgba(220,38,38,0.4); color: #fca5a5; }
+
+    .container { max-width: 1100px; margin: 32px auto; padding: 0 20px; display: flex; flex-direction: column; gap: 24px; }
+
+    .page-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .page-header h1 { font-size: 26px; font-weight: 800; }
+    .page-header p { font-size: 14px; color: var(--muted); margin-top: 2px; }
+    .header-date { font-size: 13px; color: var(--muted); background: white; padding: 8px 16px; border-radius: 10px; border: 1px solid var(--border); }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .stat-card { background: white; border-radius: 16px; padding: 22px 20px; box-shadow: 0 2px 16px rgba(30,58,95,0.07); border: 1px solid rgba(226,232,240,0.6); display: flex; align-items: center; gap: 16px; }
+    .sc-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .sc-icon.blue { background: #dbeafe; } .sc-icon.green { background: #dcfce7; }
+    .sc-icon.red { background: #fee2e2; } .sc-icon.purple { background: #ede9fe; }
+    .sc-num { font-size: 28px; font-weight: 800; line-height: 1; }
+    .sc-num.blue { color: #1d4ed8; } .sc-num.green { color: #15803d; }
+    .sc-num.red { color: #b91c1c; } .sc-num.purple { color: #6d28d9; }
+    .sc-lbl { font-size: 12px; color: var(--muted); font-weight: 500; margin-top: 4px; }
+
+    .card { background: white; border-radius: 20px; padding: 28px; box-shadow: 0 2px 16px rgba(30,58,95,0.07); border: 1px solid rgba(226,232,240,0.6); }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+    .card-header h3 { font-size: 16px; font-weight: 700; }
+
+    .filter-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .filter-row label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .filter-row input[type="date"] { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; color: var(--text); }
+
+    .btn-sm { padding: 8px 14px; background: #f1f5f9; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; font-size: 12px; font-family: inherit; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+    .btn-sm:hover { background: var(--border); color: var(--text); }
+    .btn-remove { padding: 7px 16px; background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; border-radius: 8px; font-size: 12px; font-family: inherit; cursor: pointer; font-weight: 700; transition: all 0.2s; }
+    .btn-remove:hover { background: #dc2626; color: white; border-color: #dc2626; }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    thead tr { background: #f8fafc; }
+    th { padding: 11px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; border-bottom: 2px solid var(--border); white-space: nowrap; }
+    td { padding: 13px 16px; border-bottom: 1px solid #f1f5f9; }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #f8fafc; }
+    .badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+    .badge.present { background: #dcfce7; color: #15803d; }
+    .badge.partial { background: #fef3c7; color: #b45309; }
+    .badge.absent  { background: #fee2e2; color: #b91c1c; }
+    .worker-cell { display: flex; align-items: center; gap: 10px; }
+    .w-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .w-name { font-weight: 600; font-size: 13.5px; }
+    .empty-row td { text-align: center; color: var(--muted); padding: 32px; font-size: 14px; }
+
+    .today-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .today-worker { background: #f8fafc; border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+    .today-worker.present { border-color: #86efac; background: #f0fdf4; }
+    .today-worker.absent  { border-color: #fca5a5; background: #fff5f5; }
+    .tw-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: white; flex-shrink: 0; }
+    .tw-avatar.present { background: linear-gradient(135deg, #16a34a, #22c55e); }
+    .tw-avatar.absent  { background: linear-gradient(135deg, #dc2626, #ef4444); }
+    .tw-name { font-size: 13px; font-weight: 600; }
+    .tw-time { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* CONFIRM MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 999; align-items: center; justify-content: center; }
+    .modal-overlay.show { display: flex; }
+    .modal { background: white; border-radius: 20px; padding: 36px 32px; max-width: 380px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; }
+    .modal-icon { font-size: 52px; margin-bottom: 14px; }
+    .modal h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .modal p { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+    .modal-btns { display: flex; gap: 12px; justify-content: center; }
+    .btn-cancel { padding: 12px 28px; background: #f1f5f9; color: var(--text); border: 1px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-cancel:hover { background: var(--border); }
+    .btn-confirm-del { padding: 12px 28px; background: #dc2626; color: white; border: none; border-radius: 10px; font-size: 14px; font-family: inherit; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-confirm-del:hover { background: #b91c1c; }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 16px; }
+      .container { padding: 0 12px; margin: 20px auto; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-icon">⚠️</div>
+    <h3>Remove Worker?</h3>
+    <p id="modalText">Are you sure you want to remove this worker? All their attendance data will also be deleted.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-confirm-del" onclick="confirmRemove()">Yes, Remove</button>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="nav-logo">N</div>
+    <div class="nav-brand-text">
+      <span class="t1">NEXA</span>
+      <span class="t2">KANAKPURA</span>
+    </div>
+  </a>
+  <div class="nav-right">
+    <span class="nav-badge">🛡️ Admin Panel</span>
+    <a href="login.html" class="btn-logout" onclick="logout()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+      Logout
+    </a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="page-header">
+    <div>
+      <h1>Admin Dashboard</h1>
+      <p>Manage and monitor all worker attendance at Nexa Kanakpura</p>
+    </div>
+    <div class="header-date" id="headerDate"></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid" id="statsGrid"></div>
+
+  <!-- MANAGE WORKERS -->
+  <div class="card">
+    <div class="card-header">
+      <h3>⚙️ Manage Workers</h3>
+      <button class="btn-sm" onclick="refreshAll()">🔄 Refresh</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Worker</th><th>Role</th><th>Phone</th><th>Username</th><th>Joined</th><th>Action</th></tr></thead>
+        <tbody id="manageBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TODAY STATUS -->
+  <div class="card">
+    <div class="card-header"><h3>👷 Today's Attendance Status</h3></div>
+    <div class="today-grid" id="todayGrid"></div>
+  </div>
+
+  <!-- ATTENDANCE RECORDS -->
+  <div class="card">
+    <div class="card-header">
+      <h3>📋 Attendance Records</h3>
+      <div class="filter-row">
+        <label>Filter by Date:</label>
+        <input type="date" id="filterDate" onchange="renderTable()"/>
+        <button class="btn-sm" onclick="clearFilter()">Clear</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Worker</th><th>Role</th><th>Date</th><th>Check In</th><th>Check Out</th><th>Status</th></tr></thead>
+        <tbody id="recordsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="card">
+    <div class="card-header"><h3>📊 Worker Summary</h3></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Worker</th><th>Role</th><th>Total Days</th><th>This Month</th><th>Last Seen</th><th>Status</th></tr></thead>
+        <tbody id="summaryBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const user = JSON.parse(localStorage.getItem('nexaUser') || 'null');
+  if (!user || !user.isAdmin) window.location.href = 'login.html';
+
+  let removeTargetId = null;
+
+  function logout() { localStorage.removeItem('nexaUser'); window.location.href = 'login.html'; }
+  function today() { return new Date().toISOString().split('T')[0]; }
+  function fmtDate(d) { return new Date(d).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }); }
+  function getRecords(id) { return JSON.parse(localStorage.getItem('att_' + id) || '[]'); }
+  function getWorkers() { return JSON.parse(localStorage.getItem('nexa_users') || '[]'); }
+  function saveWorkers(w) { localStorage.setItem('nexa_users', JSON.stringify(w)); }
+
+  document.getElementById('headerDate').textContent = new Date().toLocaleDateString('en-IN', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
+
+  function openModal(workerId, workerName) {
+    removeTargetId = workerId;
+    document.getElementById('modalText').textContent = 'Are you sure you want to remove "' + workerName + '"? All their attendance data will also be deleted permanently.';
+    document.getElementById('modalOverlay').classList.add('show');
+  }
+
+  function closeModal() {
+    removeTargetId = null;
+    document.getElementById('modalOverlay').classList.remove('show');
+  }
+
+  function confirmRemove() {
+    if (!removeTargetId) return;
+    const workers = getWorkers().filter(w => w.id !== removeTargetId);
+    saveWorkers(workers);
+    localStorage.removeItem('att_' + removeTargetId);
+    closeModal();
+    refreshAll();
+  }
+
+  function renderStats() {
+    const workers = getWorkers();
+    const todayStr = today();
+    let present = 0, totalRecords = 0;
+    workers.forEach(w => {
+      const r = getRecords(w.id);
+      if (r.some(x => x.date === todayStr && x.checkIn)) present++;
+      totalRecords += r.length;
+    });
+    document.getElementById('statsGrid').innerHTML = `
+      <div class="stat-card"><div class="sc-icon blue">👷</div><div><div class="sc-num blue">${workers.length}</div><div class="sc-lbl">Registered Workers</div></div></div>
+      <div class="stat-card"><div class="sc-icon green">✅</div><div><div class="sc-num green">${present}</div><div class="sc-lbl">Present Today</div></div></div>
+      <div class="stat-card"><div class="sc-icon red">❌</div><div><div class="sc-num red">${workers.length - present}</div><div class="sc-lbl">Absent Today</div></div></div>
+      <div class="stat-card"><div class="sc-icon purple">📋</div><div><div class="sc-num purple">${totalRecords}</div><div class="sc-lbl">Total Records</div></div></div>
+    `;
+  }
+
+  function renderManage() {
+    const workers = getWorkers();
+    const tbody = document.getElementById('manageBody');
+    if (!workers.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No workers registered yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = workers.map(w => `
+      <tr>
+        <td><div class="worker-cell"><div class="w-avatar">${w.name.charAt(0)}</div><div class="w-name">${w.name}</div></div></td>
+        <td>${w.role}</td>
+        <td>${w.phone || '—'}</td>
+        <td style="color:var(--muted)">${w.id}</td>
+        <td style="color:var(--muted)">${w.joinedAt ? fmtDate(w.joinedAt) : '—'}</td>
+        <td><button class="btn-remove" onclick="openModal('${w.id}', '${w.name}')">🗑️ Remove</button></td>
+      </tr>`).join('');
+  }
+
+  function renderTodayGrid() {
+    const workers = getWorkers();
+    const todayStr = today();
+    if (!workers.length) {
+      document.getElementById('todayGrid').innerHTML = '<p style="color:var(--muted);font-size:14px;padding:8px">No workers registered yet.</p>';
+      return;
+    }
+    document.getElementById('todayGrid').innerHTML = workers.map(w => {
+      const r = getRecords(w.id);
+      const rec = r.find(x => x.date === todayStr);
+      const isPresent = rec && rec.checkIn;
+      return `<div class="today-worker ${isPresent ? 'present' : 'absent'}">
+        <div class="tw-avatar ${isPresent ? 'present' : 'absent'}">${w.name.charAt(0)}</div>
+        <div>
+          <div class="tw-name">${w.name}</div>
+          <div class="tw-time">${isPresent ? '✅ ' + rec.checkIn : '❌ Absent'}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderTable() {
+    const workers = getWorkers();
+    const filterDate = document.getElementById('filterDate').value;
+    const rows = [];
+    workers.forEach(w => {
+      const records = getRecords(w.id);
+      const filtered = filterDate ? records.filter(r => r.date === filterDate) : records;
+      filtered.forEach(r => rows.push({ ...r, name: w.name, role: w.role }));
+    });
+    rows.sort((a,b) => b.date.localeCompare(a.date));
+    const tbody = document.getElementById('recordsBody');
+    if (!rows.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="6">📭 No records found' + (filterDate ? ' for selected date.' : '. Workers need to register and check in first.') + '</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(r => {
+      const status = r.checkOut ? 'present' : r.checkIn ? 'partial' : 'absent';
+      const label  = r.checkOut ? 'Complete' : r.checkIn ? 'Checked In' : 'Absent';
+      return `<tr>
+        <td><div class="worker-cell"><div class="w-avatar">${r.name.charAt(0)}</div><div class="w-name">${r.name}</div></div></td>
+        <td style="color:var(--muted)">${r.role}</td>
+        <td><strong>${fmtDate(r.date)}</strong></td>
+        <td>${r.checkIn || '—'}</td>
+        <td>${r.checkOut || '—'}</td>
+        <td><span class="badge ${status}">${label}</span></td>
+      </tr>`;
+    }).join('');
+  }
+
+  function renderSummary() {
+    const workers = getWorkers();
+    const thisMonth = new Date().toISOString().slice(0,7);
+    if (!workers.length) {
+      document.getElementById('summaryBody').innerHTML = '<tr class="empty-row"><td colspan="6">No workers registered yet.</td></tr>';
+      return;
+    }
+    document.getElementById('summaryBody').innerHTML = workers.map(w => {
+      const records = getRecords(w.id);
+      const total = records.filter(r => r.checkIn).length;
+      const month = records.filter(r => r.date.startsWith(thisMonth) && r.checkIn).length;
+      const last = records.filter(r => r.checkIn).sort((a,b) => b.date.localeCompare(a.date))[0];
+      const todayRec = records.find(r => r.date === today());
+      const isPresent = todayRec && todayRec.checkIn;
+      return `<tr>
+        <td><div class="worker-cell"><div class="w-avatar">${w.name.charAt(0)}</div><div class="w-name">${w.name}</div></div></td>
+        <td style="color:var(--muted)">${w.role}</td>
+        <td><strong>${total}</strong></td>
+        <td>${month}</td>
+        <td>${last ? fmtDate(last.date) : '<span style="color:var(--muted)">Never</span>'}</td>
+        <td><span class="badge ${isPresent ? 'present' : 'absent'}">${isPresent ? 'Present' : 'Absent'}</span></td>
+      </tr>`;
+    }).join('');
+  }
+
+  function clearFilter() {
+    document.getElementById('filterDate').value = '';
+    renderTable();
+  }
+
+  function refreshAll() {
+    renderStats();
+    renderManage();
+    renderTodayGrid();
+    renderTable();
+    renderSummary();
+  }
+
+  refreshAll();
+</script>
+</body>
+</html>
